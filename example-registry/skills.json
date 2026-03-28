@@ -1,0 +1,32 @@
+{
+  "name": "uiskills",
+  "description": "UI component skills for Claude — includes popular component libraries and animation tools",
+  "version": "1.0.0",
+  "author": "prasanthlabs",
+  "skills": [
+    {
+      "name": "shadcn",
+      "description": "shadcn/ui components — accessible, unstyled Radix-based components with Tailwind",
+      "path": "shadcn/SKILL.md",
+      "tags": ["ui", "components", "tailwind", "radix"]
+    },
+    {
+      "name": "motion",
+      "description": "Framer Motion animations — production-ready motion library for React",
+      "path": "motion/SKILL.md",
+      "tags": ["animation", "motion", "react"]
+    },
+    {
+      "name": "tanstack-table",
+      "description": "TanStack Table — headless table logic for any UI framework",
+      "path": "tanstack-table/SKILL.md",
+      "tags": ["table", "data", "react"]
+    },
+    {
+      "name": "react-hook-form",
+      "description": "React Hook Form — performant, flexible and extensible forms",
+      "path": "react-hook-form/SKILL.md",
+      "tags": ["forms", "validation", "react"]
+    }
+  ]
+}
