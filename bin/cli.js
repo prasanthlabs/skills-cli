@@ -14,7 +14,7 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 import { fetchSkillsList, fetchSkillFile, resolveRepo } from '../src/fetcher.js';
 import { packageSkill } from '../src/packager.js';
 import { installSkill } from '../src/installer.js';
-import { lookupRegistry, KNOWN_REPOS } from '../src/registry.js';
+import { lookupRegistry } from '../src/registry.js';
 
 program
   .name('skills')
@@ -58,50 +58,6 @@ program
       skillsList = await fetchSkillsList(ownerRepo);
       indexSpinner.succeed(chalk.green(`Found ${chalk.bold(skillsList.skills.length)} skill(s) in ${chalk.bold(skillsList.name || ownerRepo)}`));
     } catch (err) {
-      // No skills.json — check if this is a known repo with a curated redirect
-      const knownEntry = KNOWN_REPOS[ownerRepo];
-      if (knownEntry && options.skill) {
-        const redirectedSkills = [];
-        for (const skillName of options.skill) {
-          if (knownEntry[skillName]) {
-            redirectedSkills.push({ name: skillName, redirectRepo: knownEntry[skillName] });
-          }
-        }
-        if (redirectedSkills.length > 0) {
-          indexSpinner.warn(chalk.yellow(
-            `"${ownerRepo}" has no skills.json — using curated skill from our registry`
-          ));
-          // Re-run with the curated repo
-          for (const { name, redirectRepo } of redirectedSkills) {
-            const curated = await fetchSkillsList(redirectRepo).catch(() => null);
-            if (!curated) {
-              console.error(chalk.red(`Could not load curated skill "${name}"`));
-              continue;
-            }
-            const meta = curated.skills.find(s => s.name === name);
-            if (!meta) {
-              console.error(chalk.red(`Skill "${name}" not found in curated registry`));
-              continue;
-            }
-            const fetchSpinner = ora(chalk.blue(`Fetching curated skill "${chalk.bold(name)}"…`)).start();
-            const content = await fetchSkillFile(redirectRepo, meta.path).catch(e => {
-              fetchSpinner.fail(chalk.red(e.message));
-              return null;
-            });
-            if (!content) continue;
-            fetchSpinner.succeed(chalk.green(`Fetched "${chalk.bold(name)}" (${content.length} bytes)`));
-            const saveSpinner = ora(chalk.blue(`Saving…`)).start();
-            const skillPath = await packageSkill(name, content).catch(e => {
-              saveSpinner.fail(chalk.red(e.message));
-              return null;
-            });
-            if (!skillPath) continue;
-            saveSpinner.succeed(chalk.green(`Saved to ${chalk.bold(skillPath)}`));
-            await installSkill(name, skillPath);
-          }
-          process.exit(0);
-        }
-      }
       indexSpinner.fail(chalk.red(`Failed to fetch skills index: ${err.message}`));
       process.exit(1);
     }

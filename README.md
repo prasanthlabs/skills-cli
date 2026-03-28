@@ -3,7 +3,7 @@
 Install Claude Code skills from any GitHub repository — one command, no npm account needed.
 
 ```bash
-npx github:prasanthlabs/skills-cli add https://github.com/shadcn/ui --skill shadcn
+npx github:prasanthlabs/skills-cli add prasanthlabs/uiskills --skill shadcn
 ```
 
 ---
@@ -39,14 +39,14 @@ npx github:prasanthlabs/skills-cli add <repo> --skill <name>
 ## Install a Skill
 
 ```bash
-# shadcn/ui — point at the real repo
-npx github:prasanthlabs/skills-cli add https://github.com/shadcn/ui --skill shadcn
-
-# From our registry directly
+# Install shadcn/ui skill
 npx github:prasanthlabs/skills-cli add prasanthlabs/uiskills --skill shadcn
 
 # Multiple skills at once
 npx github:prasanthlabs/skills-cli add prasanthlabs/uiskills --skill shadcn motion
+
+# Short name (no repo needed)
+npx github:prasanthlabs/skills-cli add shadcn
 ```
 
 ---
